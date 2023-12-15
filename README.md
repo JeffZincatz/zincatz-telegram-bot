@@ -19,7 +19,7 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
 - Initally planned to utilize Twitter's Developer API. However, since Twitter updated its terms of service, it is no longer free to use for such purposes.
 - All game opponent information is requested from the official [M.League website](https://m-league.jp/).
 - Barebone functionality of retrieving the upcoming game opponent information is implemented.
-- There is no plan to add any new features.
-- Potential new features include adding current team ranking scoreboards, individual ranking scoreboards etc.
-- Currently I don't see the point to use images in bot resposnes. Not sending images can reduce payload since it is just utilizing free service.
+- Added regular season team ranking.
+- Potential new features include individual ranking scoreboards etc.
+- Currently I don't see the point to respond with icons and iamges. Reducing payload is prefereable since it is just utilizing free service.
 - No plan to upgrade to any paid hosting services, since this is just a hobby project.
