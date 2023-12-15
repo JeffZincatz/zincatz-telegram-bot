@@ -2,7 +2,7 @@ import os
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from request import get_match_info
+from request import get_match_info, get_regualr_team_rank
 
 # Load environment variables
 import dotenv
@@ -25,20 +25,26 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
   await context.bot.send_message(
       chat_id=update.effective_chat.id,
       text=
-      "Welcome to the Zincatz's M.League opponent info Bot!\nt.me/zincatz_bot\nUse /help to view all available commands."
+      "Welcome to the Zincatz's M.League info Bot!\nt.me/zincatz_bot\nUse /help to view all available commands."
   )
 
 
-async def mleague(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def opponent(update: Update, context: ContextTypes.DEFAULT_TYPE):
   match_info = get_match_info()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(match_info))
 
 
+async def team_ranking_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
+  team_ranking = get_regualr_team_rank()
+  await context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="\n".join(team_ranking))
+
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
   help_message = "Available commands:\n" +\
       "/help - Display this help message\n"+\
-      "/mleague - Display the latest M.League opponent information"
+      "/opponent - Display the latest opponent information\n"+\
+      "/regular - Display the latest regular season team ranking"
 
   # Send the help message to the user
   await context.bot.send_message(chat_id=update.effective_chat.id,
@@ -54,6 +60,7 @@ if __name__ == '__main__':
 
   add_command_handler('start', start)
   add_command_handler('help', help)
-  add_command_handler('mleague', mleague)
+  add_command_handler('opponent', opponent)
+  add_command_handler('regular', team_ranking_regular)
 
   application.run_polling()
