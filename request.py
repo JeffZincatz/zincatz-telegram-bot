@@ -1,5 +1,4 @@
 import requests
-import re
 
 def request(url:str, method:str="GET", headers:dict = {}, body:dict = {}):
     return requests.request(method, url, headers=headers, data=body)
