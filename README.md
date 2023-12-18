@@ -21,7 +21,6 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
 - Barebone functionality of retrieving the upcoming game opponent information is implemented.
 - Added regular season team ranking.
 - Added regular season personal rankings.
-- Potential new features include all individual ranking scoreboards etc.
 - Potential optimisation can be done for requesting site data.
 - Currently I don't see the point to respond with icons and iamges. Reducing payload is prefereable since it is just utilizing free service.
 - No plan to upgrade to any paid hosting services, since this is just a hobby project.
