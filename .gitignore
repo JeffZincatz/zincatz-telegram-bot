@@ -2,3 +2,8 @@ __pycache__/
 
 .env
 *.html
+
+# virtualenv
+Lib/
+Scripts/
+pyvenv.cfg
