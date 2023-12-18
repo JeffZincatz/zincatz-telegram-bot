@@ -2,7 +2,7 @@ import os
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from request import get_match_info, get_regualr_team_rank, get_personal_score, get_personal_highest, get_last_avoid_rate
+from request import Request
 
 # Load environment variables
 import dotenv
@@ -16,6 +16,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 
+req = Request()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
   await context.bot.send_message(
@@ -26,28 +27,28 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def opponent(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  match_info = get_match_info()
+  match_info = req.get_match_info()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(match_info))
 
 
 async def team_ranking_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  team_ranking = get_regualr_team_rank()
+  team_ranking = req.get_regualr_team_rank()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(team_ranking))
 
 async def personal_score_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  personal_score = get_personal_score()
+  personal_score = req.get_personal_score()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_score))
 
 async def personal_highest_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  personal_highest = get_personal_highest()
+  personal_highest = req.get_personal_highest()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_highest))
 
 async def last_avoid_rate_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  last_avoid_rate = get_last_avoid_rate()
+  last_avoid_rate = req.get_last_avoid_rate()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(last_avoid_rate))
 
