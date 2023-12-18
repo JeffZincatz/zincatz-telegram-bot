@@ -99,7 +99,6 @@ def get_personal_score()->list:
     
     _, personal_score_raw, personal_highest_raw, last_avoid_rate_raw = data.split(b'<h3 class="p-ranking__personal-heading">')
     
-    # individual score
     personal_score_title, personal_score_raw = personal_score_raw.split(b'</h3>')
     personal_scores = personal_score_raw.split(b'<td>')[1:]
     
@@ -117,9 +116,8 @@ def get_personal_score()->list:
 def get_personal_highest()->list:
     data = request_html_content()
     
-    _, personal_highest_raw, personal_highest_raw, last_avoid_rate_raw = data.split(b'<h3 class="p-ranking__personal-heading">')
+    _, personal_score_raw, personal_highest_raw, last_avoid_rate_raw = data.split(b'<h3 class="p-ranking__personal-heading">')
     
-    # individual score
     personal_highest_title, personal_highest_raw = personal_highest_raw.split(b'</h3>')
     personal_highest = personal_highest_raw.split(b'<td>')[1:]
 
@@ -134,12 +132,35 @@ def get_personal_highest()->list:
 
     return result
 
-if __name__ == "__main__":
-    personal_score = get_personal_score()
-    print(personal_score)
+def get_last_avoid_rate()->list:
+    data = request_html_content()
     
-    personal_highest = get_personal_highest()
-    print(personal_highest)
+    _, personal_score_raw, personal_highest_raw, last_avoid_rate_raw = data.split(b'<h3 class="p-ranking__personal-heading">')
+    
+    last_avoid_rate_title, last_avoid_rate_raw = last_avoid_rate_raw.split(b'</h3>')[:2]
+    last_avoid_rate = last_avoid_rate_raw.split(b'<td>')[1:]
+
+    result = []
+    result.append(last_avoid_rate_title.decode())
+    result.append("|順位|  |個人名|  |Rate|")
+    
+    for each in last_avoid_rate:
+        info = _process_personal_bytes(each)
+        pos, name, point = info[0], info[1], info[2]
+        result.append(f"{pos}. {name} {point}")
+
+    return result
+
+
+if __name__ == "__main__":
+    # personal_score = get_personal_score()
+    # print(personal_score)
+    
+    # personal_highest = get_personal_highest()
+    # print(personal_highest)
+    
+    last_avoid = get_last_avoid_rate()
+    print(last_avoid)
     
     
     

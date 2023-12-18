@@ -2,7 +2,7 @@ import os
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from request import get_match_info, get_regualr_team_rank, get_personal_score, get_personal_highest
+from request import get_match_info, get_regualr_team_rank, get_personal_score, get_personal_highest, get_last_avoid_rate
 
 # Load environment variables
 import dotenv
@@ -46,13 +46,19 @@ async def personal_highest_regular(update: Update, context: ContextTypes.DEFAULT
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_highest))
 
+async def last_avoid_rate_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
+  last_avoid_rate = get_last_avoid_rate()
+  await context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="\n".join(last_avoid_rate))
+
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
   help_message = "\n".join([
       "Available commands:", "/help - Display this help message",
       "/opponent - Display the latest opponent information",
       "/regular - Display the latest regular season team ranking",
       "/personal_score - Display personal score ranking",
-      "/personal_highest - Display personal highest ranking"
+      "/personal_highest - Display personal highest ranking",
+      "/last_avoid_rate - Display the last avoid rate ranking"
   ])
 
   # Send the help message to the user
@@ -76,6 +82,7 @@ if __name__ == '__main__':
   add_command_handler('regular', team_ranking_regular)
   add_command_handler('personal_score', personal_score_regular)
   add_command_handler('personal_highest', personal_highest_regular)
+  add_command_handler('last_avoid_rate', last_avoid_rate_regular)
 
   application.run_polling()
   
