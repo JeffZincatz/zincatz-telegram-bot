@@ -77,6 +77,23 @@ def get_regualr_team_rank()->list:
 
     return team_ranking
 
+
+def _process_personal_bytes(personal:bytes)->list[str]:
+    result = ""
+    is_inside = False
+    
+    for ch in personal.decode():
+        if is_inside:
+            if ch == '>':
+                is_inside = False
+            continue
+        else:
+            if ch == '<':
+                is_inside = True
+            else:
+                result += str(ch)
+    return result.split()
+
 def get_personal_score()->list:
     data = request_html_content()
     
@@ -86,28 +103,32 @@ def get_personal_score()->list:
     personal_score_title, personal_score_raw = personal_score_raw.split(b'</h3>')
     personal_scores = personal_score_raw.split(b'<td>')[1:]
     
-    def process_personal_score_bytes(personal_score:bytes)->list[str]:
-        result = ""
-        is_inside = False
-        
-        for ch in personal_score.decode():
-            if is_inside:
-                if ch == '>':
-                    is_inside = False
-                continue
-            else:
-                if ch == '<':
-                    is_inside = True
-                else:
-                    result += str(ch)
-        return result.split()
-    
     result = []
     result.append(personal_score_title.decode())
     result.append("|順位|  |個人名|  |Point|")
     
     for each in personal_scores:
-        info = process_personal_score_bytes(each)
+        info = _process_personal_bytes(each)
+        pos, name, point = info[0], info[1], info[2]
+        result.append(f"{pos}. {name} {point}")
+
+    return result
+
+def get_personal_highest()->list:
+    data = request_html_content()
+    
+    _, personal_highest_raw, personal_highest_raw, last_avoid_rate_raw = data.split(b'<h3 class="p-ranking__personal-heading">')
+    
+    # individual score
+    personal_highest_title, personal_highest_raw = personal_highest_raw.split(b'</h3>')
+    personal_highest = personal_highest_raw.split(b'<td>')[1:]
+
+    result = []
+    result.append(personal_highest_title.decode())
+    result.append("|順位|  |個人名|  |Point|")
+    
+    for each in personal_highest:
+        info = _process_personal_bytes(each)
         pos, name, point = info[0], info[1], info[2]
         result.append(f"{pos}. {name} {point}")
 
@@ -116,4 +137,9 @@ def get_personal_score()->list:
 if __name__ == "__main__":
     personal_score = get_personal_score()
     print(personal_score)
+    
+    personal_highest = get_personal_highest()
+    print(personal_highest)
+    
+    
     

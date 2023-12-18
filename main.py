@@ -2,7 +2,7 @@ import os
 import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-from request import get_match_info, get_regualr_team_rank, get_personal_score
+from request import get_match_info, get_regualr_team_rank, get_personal_score, get_personal_highest
 
 # Load environment variables
 import dotenv
@@ -41,16 +41,19 @@ async def personal_score_regular(update: Update, context: ContextTypes.DEFAULT_T
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_score))
 
+async def personal_highest_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
+  personal_highest = get_personal_highest()
+  await context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="\n".join(personal_highest))
+
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  help_message = "\n".join(
-    [
-      "Available commands:",
-      "/help - Display this help message",
+  help_message = "\n".join([
+      "Available commands:", "/help - Display this help message",
       "/opponent - Display the latest opponent information",
       "/regular - Display the latest regular season team ranking",
-      "/personal_score - Display personal score ranking"
-      ]
-    )
+      "/personal_score - Display personal score ranking",
+      "/personal_highest - Display personal highest ranking"
+  ])
 
   # Send the help message to the user
   await context.bot.send_message(chat_id=update.effective_chat.id,
@@ -72,6 +75,7 @@ if __name__ == '__main__':
   add_command_handler('opponent', opponent)
   add_command_handler('regular', team_ranking_regular)
   add_command_handler('personal_score', personal_score_regular)
+  add_command_handler('personal_highest', personal_highest_regular)
 
   application.run_polling()
   
