@@ -6,9 +6,12 @@ class Scraper():
     def __init__(self):
         self.request = Request()
     
-    def get_match_info(self):
+    def _get_soup(self):
         data = self.request.request_html_content()
-        soup = BeautifulSoup(data, 'html.parser')
+        return BeautifulSoup(data, 'html.parser')
+    
+    def get_match_info(self):
+        soup = self._get_soup()
         result = list()
         
         # date
@@ -29,7 +32,24 @@ class Scraper():
         return result
         
 
+    def get_regualr_team_rank(self):
+        soup = self._get_soup()
+        result = ["|Rank|  |Team|  |Points|  |Difference|"]
+        
+        # teams
+        teams = soup.find_all('div', attrs={'class': 'p-ranking__team-item'})
+        for team in teams:
+            rank = team.find('div', attrs={'class': 'p-ranking__rank-number'}).contents[0]
+            team_name = team.find('img')['alt']
+            current_point = team.find('div', attrs={'class': 'p-ranking__current-point'}).contents[0]
+            diff_point = team.find('div', attrs={'class': 'p-ranking__diff-point'}).contents[0].strip()
+            result.append(f"{rank}. {team_name} {current_point} {diff_point}")
+        
+        return result
+    
 if __name__ == '__main__':
     scraper = Scraper()
-    match_info = scraper.get_match_info()
-    print(match_info)
+    # match_info = scraper.get_match_info()
+    # print(match_info)
+    team_ranking = scraper.get_regualr_team_rank()
+    print(team_ranking)

@@ -3,6 +3,7 @@ import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from request import Request
+from scrape_bs import Scraper
 
 # Load environment variables
 import dotenv
@@ -17,6 +18,7 @@ logging.basicConfig(
     level=logging.INFO)
 
 req = Request()
+scraper = Scraper()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
   await context.bot.send_message(
@@ -27,13 +29,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def opponent(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  match_info = req.get_match_info()
+  match_info = scraper.get_match_info()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(match_info))
 
 
 async def team_ranking_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  team_ranking = req.get_regualr_team_rank()
+  team_ranking = scraper.get_regualr_team_rank()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(team_ranking))
 
