@@ -40,17 +40,17 @@ async def team_ranking_regular(update: Update, context: ContextTypes.DEFAULT_TYP
                                  text="\n".join(team_ranking))
 
 async def personal_score_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  personal_score = req.get_personal_score()
+  personal_score = scraper.get_personal_score()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_score))
 
 async def personal_highest_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  personal_highest = req.get_personal_highest()
+  personal_highest = scraper.get_personal_highest()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(personal_highest))
 
 async def last_avoid_rate_regular(update: Update, context: ContextTypes.DEFAULT_TYPE):
-  last_avoid_rate = req.get_last_avoid_rate()
+  last_avoid_rate = scraper.get_last_avoid_rate()
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="\n".join(last_avoid_rate))
 

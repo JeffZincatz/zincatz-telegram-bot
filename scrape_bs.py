@@ -1,3 +1,4 @@
+from enum import Enum
 from bs4 import BeautifulSoup
 from request import Request
 
@@ -10,7 +11,7 @@ class Scraper():
         data = self.request.request_html_content()
         return BeautifulSoup(data, 'html.parser')
     
-    def get_match_info(self):
+    def get_match_info(self)->list[str]:
         soup = self._get_soup()
         result = list()
         
@@ -32,7 +33,7 @@ class Scraper():
         return result
         
 
-    def get_regualr_team_rank(self):
+    def get_regualr_team_rank(self)->list[str]:
         soup = self._get_soup()
         result = ["|Rank|  |Team|  |Points|  |Difference|"]
         
@@ -46,10 +47,56 @@ class Scraper():
             result.append(f"{rank}. {team_name} {current_point} {diff_point}")
         
         return result
+
+    class PersonalRankingType(Enum):
+        SCORE = 0
+        HIGHEST = 1
+        LAST_AVOID_RATE = 2
     
+    def get_personal_ranking(self, ranking_type:PersonalRankingType)->list[str]:
+        soup = self._get_soup()
+
+        column = soup.find_all('div', attrs={'class': 'p-ranking__personal-column'})[ranking_type.value]
+        
+        headings = column.find('thead').find_all('th')
+        heading = str()
+        for th in headings:
+            if th.contents:
+                heading += f"|{th.contents[0]}|  "
+            else:
+                heading += "|Rate|" # last avoid rate missing last column heading
+        
+        result = [heading]
+        
+        title = column.find('h3', attrs={'class': 'p-ranking__personal-heading'}).contents[0]
+        result.append(title)
+        table = column.find_all('tr')[1:]
+        for row in table:
+            rank = row.find('div', attrs={'class': 'p-ranking__personal-number'}).contents[0].strip()
+            player_name = row.find('div', attrs={'class': 'p-ranking__personal-name'}).contents[0].strip()
+            point = row.find('td', attrs={'class': 'p-ranking__personal-point'}).contents[0].strip()
+            result.append(f"{rank}. {player_name} {point}")
+        
+        return result
+
+    def get_personal_score(self):
+        return self.get_personal_ranking(self.PersonalRankingType.SCORE)
+    
+    def get_personal_highest(self):
+        return self.get_personal_ranking(self.PersonalRankingType.HIGHEST)
+
+    def get_last_avoid_rate(self):
+        return self.get_personal_ranking(self.PersonalRankingType.LAST_AVOID_RATE)
+
 if __name__ == '__main__':
     scraper = Scraper()
-    # match_info = scraper.get_match_info()
-    # print(match_info)
+    match_info = scraper.get_match_info()
+    print(match_info)
     team_ranking = scraper.get_regualr_team_rank()
     print(team_ranking)
+    personal_score = scraper.get_personal_score()
+    print(personal_score)
+    personal_highest = scraper.get_personal_highest()
+    print(personal_highest)
+    last_avoid_rate = scraper.get_last_avoid_rate()
+    print(last_avoid_rate)
