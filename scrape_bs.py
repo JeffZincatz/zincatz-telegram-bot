@@ -58,6 +58,13 @@ class Scraper():
 
         column = soup.find_all('div', attrs={'class': 'p-ranking__personal-column'})[ranking_type.value]
         
+        result = []
+        
+        # title
+        title = column.find('h3', attrs={'class': 'p-ranking__personal-heading'}).contents[0]
+        result.append(title)
+        
+        # heading
         headings = column.find('thead').find_all('th')
         heading = str()
         for th in headings:
@@ -66,10 +73,9 @@ class Scraper():
             else:
                 heading += "|Rate|" # last avoid rate missing last column heading
         
-        result = [heading]
+        result.append(heading)
         
-        title = column.find('h3', attrs={'class': 'p-ranking__personal-heading'}).contents[0]
-        result.append(title)
+        # table
         table = column.find_all('tr')[1:]
         for row in table:
             rank = row.find('div', attrs={'class': 'p-ranking__personal-number'}).contents[0].strip()
