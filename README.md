@@ -6,6 +6,7 @@ A simple telegram bot here at [M.League Opponent Info Bot](https://t.me/zincatz_
 ## Built With
 - Python
   - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+  - [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
 
 ## Development
 
@@ -22,5 +23,6 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
 - Added regular season team ranking.
 - Added regular season personal rankings.
 - Some optimisation to cache page data for 1 minute (this duration is adjustable).
+- Use [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) for more robust scraping.
 - Currently I don't see the point to respond with icons and iamges. Reducing payload is prefereable since it is just utilizing free service.
 - No plan to upgrade to any paid hosting services, since this is just a hobby project.
