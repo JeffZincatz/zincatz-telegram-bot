@@ -80,7 +80,17 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
   await context.bot.send_message(chat_id=update.effective_chat.id,
                                  text=help_message)
 
-async def help_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+'''
+Callback query handler for menu
+'''
+def get_menu_callback_query_handler(message:str):
+  async def menu_handler(update:Update, context:ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(text=message, reply_markup=await menu_keyboard())
+  return menu_handler
+
+def help_menu():
   message = "\n".join([
       "Available commands:", "/help - Display this help message",
       "/opponent - Display the latest opponent information",
@@ -89,19 +99,35 @@ async def help_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
       "/personal_highest - Display personal highest ranking",
       "/last_avoid_rate - Display the last avoid rate ranking"
   ])
-  
-  query = update.callback_query
-  await query.answer()
-  await query.edit_message_text(text=message, reply_markup=await menu_keyboard())
+  return get_menu_callback_query_handler(message)
 
-async def default_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+def default_menu():
   message = "Zincatz's M.League Infoboard"
-  query = update.callback_query
-  await query.answer()
-  await query.edit_message_text(text=message, reply_markup=await menu_keyboard())
+  return get_menu_callback_query_handler(message)
+
+def opponent_menu():
+  message = '\n'.join(scraper.get_match_info())
+  return get_menu_callback_query_handler(message)
+
+def regular_menu():
+  message = '\n'.join(scraper.get_regualr_team_rank())
+  return get_menu_callback_query_handler(message)
+
+def personal_score_menu():
+  message = '\n'.join(scraper.get_personal_score())
+  return get_menu_callback_query_handler(message)
+
+def personal_highest_menu():
+  message = '\n'.join(scraper.get_personal_highest())
+  return get_menu_callback_query_handler(message)
+
+def last_avoid_rate_menu():
+  message = '\n'.join(scraper.get_last_avoid_rate())
+  return get_menu_callback_query_handler(message)
+
 
 '''
-Keyboards
+Keyboard
 '''
 async def menu_keyboard():
   keyboard = [
@@ -135,8 +161,13 @@ if __name__ == '__main__':
   add_command_handler(application, 'last_avoid_rate', last_avoid_rate_regular)
   
   add_command_handler(application, 'menu', menu_handler)
-  application.add_handler(CallbackQueryHandler(help_menu, pattern='help'))
-  application.add_handler(CallbackQueryHandler(default_menu, pattern='menu'))
+  application.add_handler(CallbackQueryHandler(help_menu(), pattern='help'))
+  application.add_handler(CallbackQueryHandler(default_menu(), pattern='menu'))
+  application.add_handler(CallbackQueryHandler(opponent_menu(), pattern='opponent'))
+  application.add_handler(CallbackQueryHandler(regular_menu(), pattern='regular'))
+  application.add_handler(CallbackQueryHandler(personal_score_menu(), pattern='personal_score'))
+  application.add_handler(CallbackQueryHandler(personal_highest_menu(), pattern='personal_highest'))
+  application.add_handler(CallbackQueryHandler(last_avoid_rate_menu(), pattern='last_avoid_rate'))
 
   application.run_polling()
   
