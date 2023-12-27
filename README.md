@@ -24,8 +24,8 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
 - Added regular season personal rankings.
 - Some optimisation to cache page data for 1 minute (this duration is adjustable).
 - Use [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) for more robust scraping.
-- Build menu buttons instead of pure commands to prevent spamming.
-  - [Stackoverflow Example](https://stackoverflow.com/questions/51125356/proper-way-to-build-menus-with-python-telegram-bot)
+- Build button keyboards instead of pure commands to reduce spamming.
+  - Side note, abstracting callback handlers affected message text updates, thus was not implemented (werid...).
 - Potential features:
   - Personal & team statistics
     - [Stats Overview](https://m-league.jp/stats)
