@@ -30,5 +30,10 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
   - Personal & team statistics
     - [Stats Overview](https://m-league.jp/stats)
     - [Team Points](https://m-league.jp/points)
+  - Schedule to run requesting opponent cards on game days repeatedly.
+    - Users can subscribe/unsubscribe opponent card updates by using commands/buttons, but the list of user ids must become **persistent**, especially if the bot is restarted.
+    - On every Monday, Tuesday, Thursday, Friday, in game season period (the dates might have to be hard-coded), start requesting cards from, say 14:00 (GMT +8) every, say 5mins, until opponent cards are updated, or until 18:00 (which means the day should have no game for reasons such as holidays).
+    - If an updated non-empty opponent card is found, send a notification to all subscribed users by id.
+    
 - Currently I don't see the point to respond with icons and images. Reducing payload is prefereable since it is just utilizing free service.
 - No plan to upgrade to any paid hosting services, since this is just a hobby project.
