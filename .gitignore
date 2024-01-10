@@ -3,6 +3,8 @@ __pycache__/
 .env
 *.html
 
+.data/
+
 # virtualenv
 Lib/
 Scripts/
