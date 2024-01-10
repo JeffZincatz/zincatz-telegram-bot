@@ -10,11 +10,11 @@ A simple telegram bot here at [M.League Opponent Info Bot](https://t.me/zincatz_
 
 ## Development
 
-Developed locally and can be hosted on local machine.
+Developed locally and can be hosted locally in terminal or Docker.
 
-Currently deployed on free tier Replit and kept running alive with UptimeRobot.
+Currently **not** deployed. Previous deployment using Replit and UptimeRobot seized functioning.
 
-Replit manages Telegram Bot API key using its Secret Environment Variable. Locally, environment variable configuration is needed using python-dotenv.
+Locally, environment variable configuration is needed using python-dotenv.
 
 ## Roadmap
 - Initally planned to utilize Twitter's Developer API. However, since Twitter updated its terms of service, it is no longer free to use for such purposes.
@@ -36,4 +36,4 @@ Replit manages Telegram Bot API key using its Secret Environment Variable. Local
     - If an updated non-empty opponent card is found, send a notification to all subscribed users by id.
     
 - Currently I don't see the point to respond with icons and images. Reducing payload is prefereable since it is just utilizing free service.
-- No plan to upgrade to any paid hosting services, since this is just a hobby project.
+- No plan to use any paid hosting services, since this is just a hobby project.
