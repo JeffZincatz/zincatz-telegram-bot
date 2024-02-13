@@ -12,9 +12,9 @@ A simple telegram bot here at [M.League Opponent Info Bot](https://t.me/zincatz_
 
 Developed locally and can be hosted locally in terminal or Docker.
 
-Currently **not** deployed. Previous deployment using Replit and UptimeRobot seized functioning.
+Currently deployed using school server (lol). Previous deployment using Replit and UptimeRobot seized functioning.
 
-Locally, environment variable configuration is needed using python-dotenv.
+Telegram bot token needs to be set up in environment configuration.
 
 ## Roadmap
 - Initally planned to utilize Twitter's Developer API. However, since Twitter updated its terms of service, it is no longer free to use for such purposes.
@@ -31,9 +31,10 @@ Locally, environment variable configuration is needed using python-dotenv.
     - [Stats Overview](https://m-league.jp/stats)
     - [Team Points](https://m-league.jp/points)
   - Schedule to run requesting opponent cards on game days repeatedly.
-    - Users can subscribe/unsubscribe opponent card updates by using commands/buttons, but the list of user ids must become **persistent**, especially if the bot is restarted.
+    - Users can subscribe/unsubscribe opponent card updates by using commands/buttons.
     - On every Monday, Tuesday, Thursday, Friday, in game season period (the dates might have to be hard-coded), start requesting cards from, say 14:00 (GMT +8) every, say 5mins, until opponent cards are updated, or until 18:00 (which means the day should have no game for reasons such as holidays).
     - If an updated non-empty opponent card is found, send a notification to all subscribed users by id.
+    - The list of subscribed user ids must become **persistent**, meaning that some form of persitent database is required.
     
 - Currently I don't see the point to respond with icons and images. Reducing payload is prefereable since it is just utilizing free service.
 - No plan to use any paid hosting services, since this is just a hobby project.
